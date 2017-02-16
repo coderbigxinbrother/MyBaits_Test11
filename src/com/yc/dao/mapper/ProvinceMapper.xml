@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yc.dao.mapper.ProviceMapper">
+	<select id="findProvince" parameterType="int" resultType="com.yc.bean.Province" resultMap="ProvinceResultMap">
+	    select cid, cname, province.pid as pid, pname
+		from province inner join city
+		on city.pid = Province.pid
+		where Province.pid = #{pid}
+	</select>
+    <!-- 通过resultMap -->
+    <resultMap type="com.yc.bean.Province" id="ProvinceResultMap">
+        <!-- id：主键列  加快查询速度-->
+        <id property="pid" column="pid"/>
+        <!-- 使用result来映射普通的列 -->
+        <result property="pname" column="pname"/>
+        
+        <!-- 关联集合对象使用collection来映射对象-->
+        <collection property="citys" ofType="com.yc.bean.City">
+	        <id property="cid" column="cid"/>
+	        <result property="cname" column="cname"/>
+        </collection>
+    </resultMap>
+</mapper>
